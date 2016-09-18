@@ -56,7 +56,11 @@ class WechatParser(object):
         if not os.path.exists(self.path):
             raise IOError('Path `%s` not exist for user %s' % (self.path, user_id))
         self.user_id = user_id
-        self.user_hash = id_to_digest(user_id)
+        if len(user_id) == 32:
+            print "Using direct hash"
+            self.user_hash = user_id
+        else:
+            self.user_hash = id_to_digest(user_id)
 
     def get_labels(self):
         plist_path = self.path + '/%s/contactlabel.list' % self.user_hash
